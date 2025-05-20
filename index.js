@@ -1,7 +1,6 @@
-import config from "dotenv/config";
+import "dotenv/config";
 import express from "express";
 import sequelize from "./sequelize.js";
-import * as mapping from "./models/mapping.js";
 import cors from "cors";
 import fileUpload from "express-fileupload";
 import cookieParser from "cookie-parser";
@@ -11,7 +10,7 @@ import errorMiddleware from "./middleware/errorMiddleware.js";
 const PORT = process.env.PORT || 5000;
 
 const app = express();
-app.use(cors({ origin: ["http://localhost:3000"], credentials: true }));
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json());
 app.use(express.static("static"));
 app.use(fileUpload());

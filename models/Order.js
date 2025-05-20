@@ -32,13 +32,11 @@ class Order {
   }
 
   async create(data) {
-    // общая стоимость заказа
     const items = data.items;
     const amount = items.reduce(
       (sum, item) => sum + item.price * item.quantity,
       0
     );
-    // данные для создания заказа
     const { name, email, phone, address, comment = null, userId = null } = data;
     const order = await OrderMapping.create({
       name,
@@ -50,7 +48,6 @@ class Order {
       userId,
       payment_status: "unpaid",
     });
-    // товары, входящие в заказ
     for (let item of items) {
       await OrderItemMapping.create({
         name: item.name,
