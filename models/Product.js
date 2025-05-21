@@ -40,7 +40,7 @@ class Product {
   }
 
   async create(data, img) {
-    const image = FileService.save(img) ?? "";
+    const image = (await FileService.save(img)) ?? "";
     const { name, price, categoryId = null, brandId = null } = data;
     const product = await ProductMapping.create({
       name,
