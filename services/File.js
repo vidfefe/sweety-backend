@@ -1,7 +1,7 @@
 import * as uuid from "uuid";
 import * as path from "path";
 import fs from "fs";
-import cloudinary from "../cloudary";
+import cloudinary from "../cloudinary.js";
 
 class File {
   async save(file) {
@@ -15,19 +15,18 @@ class File {
         })
         .end(file.data);
     });
-
-    const [, ext] = file.mimetype.split("/");
-    const fileName = uuid.v4() + "." + ext;
-    const filePath = path.resolve("static", fileName);
-    file.mv(filePath);
-    return fileName;
   }
-  delete(file) {
-    if (file) {
-      const filePath = path.resolve("static", file);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      }
+  async delete(fileUrl) {
+    if (!fileUrl) return;
+
+    try {
+      const parts = fileUrl.split("/");
+      const fileName = parts.at(-1);
+      const publicId = `products/${fileName.split(".")[0]}`;
+
+      await cloudinary.uploader.destroy(publicId);
+    } catch (error) {
+      console.error(error);
     }
   }
 }
