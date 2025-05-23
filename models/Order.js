@@ -1,6 +1,5 @@
 import { Order as OrderMapping } from "./mapping.js";
 import { OrderItem as OrderItemMapping } from "./mapping.js";
-import AppError from "../errors/AppError.js";
 
 class Order {
   async getAll(userId = null) {
@@ -26,7 +25,7 @@ class Order {
     if (userId) options.where.userId = userId;
     const order = await OrderMapping.findOne(options);
     if (!order) {
-      throw new Error("Заказ не найден в БД");
+      throw new Error("Заказ не найден");
     }
     return order;
   }
@@ -75,7 +74,7 @@ class Order {
       ],
     });
     if (!order) {
-      throw new Error("Заказ не найден в БД");
+      throw new Error("Заказ не найден");
     }
     await order.destroy();
     return order;

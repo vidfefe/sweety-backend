@@ -1,12 +1,11 @@
 import { BasketProduct as BasketProductMapping } from "./mapping.js";
 import { Basket as BasketMapping } from "./mapping.js";
-import AppError from "../errors/AppError.js";
 
 class BasketProduct {
   async getAll(basketId) {
     const basket = await BasketMapping.findByPk(basketId);
     if (!basket) {
-      throw new Error("Корзина не найдена в БД");
+      throw new Error("Корзина не найдена");
     }
     const items = await BasketProductMapping.findAll({ where: { basketId } });
     return items;
@@ -15,7 +14,7 @@ class BasketProduct {
   async getOne(basketId, productId) {
     const basket = await BasketMapping.findByPk(basketId);
     if (!basket) {
-      throw new Error("Корзина не найдена в БД");
+      throw new Error("Корзина не найдена");
     }
     const item = await BasketProductMapping.findOne({
       where: { basketId, productId },
@@ -29,7 +28,7 @@ class BasketProduct {
   async create(basketId, data) {
     const basket = await BasketMapping.findByPk(basketId);
     if (!basket) {
-      throw new Error("Корзина не найдена в БД");
+      throw new Error("Корзина не найдена");
     }
     const { quantity = 1 } = data;
     const item = await BasketProductMapping.create({
@@ -43,7 +42,7 @@ class BasketProduct {
   async update(basketId, productId, data) {
     const basket = await BasketMapping.findByPk(basketId);
     if (!basket) {
-      throw new Error("Корзина не найдена в БД");
+      throw new Error("Корзина не найдена");
     }
     const item = await BasketProductMapping.findOne({
       where: { basketId, productId },
@@ -64,7 +63,7 @@ class BasketProduct {
   async delete(basketId, productId) {
     const basket = await BasketMapping.findByPk(basketId);
     if (!basket) {
-      throw new Error("Корзина не найдена в БД");
+      throw new Error("Корзина не найдена");
     }
     const item = await BasketProductMapping.findOne({
       where: { basketId, productId },

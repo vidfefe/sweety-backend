@@ -12,7 +12,7 @@ class Brand {
   async getOne(id) {
     const brand = await BrandMapping.findByPk(id);
     if (!brand) {
-      throw new Error("Бренд не найден в БД");
+      throw new Error("Бренд не найден");
     }
     return brand;
   }
@@ -30,7 +30,7 @@ class Brand {
   async update(id, data) {
     const brand = await BrandMapping.findByPk(id);
     if (!brand) {
-      throw new Error("Бренд не найден в БД");
+      throw new Error("Бренд не найден");
     }
     const { name = brand.name } = data;
     await brand.update({ name });
@@ -40,7 +40,7 @@ class Brand {
   async delete(id) {
     const brand = await BrandMapping.findByPk(id);
     if (!brand) {
-      throw new Error("Бренд не найден в БД");
+      throw new Error("Бренд не найден");
     }
     await brand.destroy();
     return brand;

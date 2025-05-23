@@ -12,7 +12,7 @@ class Category {
   async getOne(id) {
     const category = await CategoryMapping.findByPk(id);
     if (!category) {
-      throw new Error("Категория не найдена в БД");
+      throw new Error("Категория не найдена");
     }
     return category;
   }
@@ -30,7 +30,7 @@ class Category {
   async update(id, data) {
     const category = await CategoryMapping.findByPk(id);
     if (!category) {
-      throw new Error("Категория не найдена в БД");
+      throw new Error("Категория не найдена");
     }
     const { name = category.name } = data;
     await category.update({ name });
@@ -40,7 +40,7 @@ class Category {
   async delete(id) {
     const category = await CategoryMapping.findByPk(id);
     if (!category) {
-      throw new Error("Категория не найдена в БД");
+      throw new Error("Категория не найдена");
     }
     await category.destroy();
     return category;

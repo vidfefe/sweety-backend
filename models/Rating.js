@@ -11,7 +11,7 @@ class Rating {
 
     const product = await ProductMapping.findByPk(productId);
     if (!product) {
-      throw AppError.badRequest("Товар не найден в БД");
+      throw AppError.badRequest("Товар не найден");
     }
 
     const userRating = await RatingMapping.findOne({
@@ -24,12 +24,12 @@ class Rating {
   async create(userId, productId, rate) {
     const product = await ProductMapping.findByPk(productId);
     if (!product) {
-      throw AppError.badRequest(`Товар не найден в БД${productId}`);
+      throw AppError.badRequest(`Товар не найден ${productId}`);
     }
 
     const user = await UserMapping.findByPk(userId);
     if (!user) {
-      throw AppError.badRequest(`Пользователь не найден в БД ${userId}`);
+      throw AppError.badRequest(`Пользователь не найден ${userId}`);
     }
 
     const existingRating = await RatingMapping.findOne({

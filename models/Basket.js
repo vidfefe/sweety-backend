@@ -49,7 +49,6 @@ class Basket {
         { model: ProductMapping, attributes: ["id", "name", "price", "image"] },
       ],
     });
-    console.log(basket);
     if (!basket) {
       basket = await BasketMapping.create();
     }

@@ -1,5 +1,4 @@
 import { User as UserMapping } from "./mapping.js";
-import AppError from "../errors/AppError.js";
 
 class User {
   async getAll() {
@@ -10,7 +9,7 @@ class User {
   async getOne(id) {
     const user = await UserMapping.findByPk(id);
     if (!user) {
-      throw new Error("Пользователь не найден в БД");
+      throw new Error("Пользователь не найден");
     }
     return user;
   }
@@ -18,7 +17,7 @@ class User {
   async getByEmail(email) {
     const user = await UserMapping.findOne({ where: { email } });
     if (!user) {
-      throw new Error("Пользователь не найден в БД");
+      throw new Error("Пользователь не найден");
     }
     return user;
   }
@@ -36,7 +35,7 @@ class User {
   async update(id, data) {
     const user = await UserMapping.findByPk(id);
     if (!user) {
-      throw new Error("Пользователь не найден в БД");
+      throw new Error("Пользователь не найден");
     }
     const {
       email = user.email,
@@ -50,7 +49,7 @@ class User {
   async delete(id) {
     const user = await UserMapping.findByPk(id);
     if (!user) {
-      throw new Error("Пользователь не найден в БД");
+      throw new Error("Пользователь не найден");
     }
     await user.destroy();
     return user;

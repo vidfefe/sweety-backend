@@ -1,6 +1,3 @@
-import * as uuid from "uuid";
-import * as path from "path";
-import fs from "fs";
 import cloudinary from "../cloudinary.js";
 
 class File {

@@ -3,7 +3,6 @@ import { ProductProp as ProductPropMapping } from "./mapping.js";
 import { Brand as BrandMapping } from "./mapping.js";
 import { Category as CategoryMapping } from "./mapping.js";
 import FileService from "../services/File.js";
-import AppError from "../errors/AppError.js";
 
 class Product {
   async getAll(options) {
@@ -69,13 +68,17 @@ class Product {
     const product = await ProductMapping.findByPk(id, {
       include: [{ model: ProductPropMapping, as: "props" }],
     });
+
     if (!product) {
       throw new Error("Товар не найден в БД");
     }
-    const file = FileService.save(img);
+
+    const file = img ? await FileService.save(img) : null;
+
     if (file && product.image) {
       FileService.delete(product.image);
     }
+
     const {
       name = product.name,
       price = product.price,
@@ -83,7 +86,9 @@ class Product {
       brandId = product.brandId,
       image = file ? file : product.image,
     } = data;
+
     await product.update({ name, price, categoryId, image, brandId });
+
     if (data.props) {
       await ProductPropMapping.destroy({ where: { productId: id } });
       const props = JSON.parse(data.props);
@@ -95,6 +100,7 @@ class Product {
         });
       }
     }
+
     await product.reload();
     return product;
   }
