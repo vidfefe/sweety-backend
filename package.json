@@ -4,9 +4,10 @@
   "description": "Интернет магазин, сервер",
   "main": "index.js",
   "type": "module",
-  "scripts": {
+  "scripts": {    
     "start": "node index.js",
-    "start-dev": "nodemon index.js"
+    "start-dev": "nodemon index.js",
+    "migrate": "npx sequelize-cli db:migrate"
   },
   "keywords": [
     "Backend",
