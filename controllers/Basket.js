@@ -5,6 +5,15 @@ import AppError from "../errors/AppError.js";
 const maxAge = 60 * 60 * 1000 * 24 * 365;
 const signed = true;
 
+const cookieOptions = {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  signed,
+  maxAge,
+  path: "/",
+};
+
 class Basket {
   async getOne(req, res, next) {
     try {
@@ -14,7 +23,7 @@ class Basket {
       } else {
         basket = await BasketModel.create();
       }
-      res.cookie("basketId", basket.id, { maxAge, signed });
+      res.cookie("basketId", String(basket.id), cookieOptions);
       res.json(basket);
     } catch (e) {
       next(AppError.badRequest(e.message));
@@ -32,7 +41,7 @@ class Basket {
       }
       const { productId, quantity } = req.params;
       const basket = await BasketModel.append(basketId, productId, quantity);
-      res.cookie("basketId", basket.id, { maxAge, signed });
+      res.cookie("basketId", String(basket.id), cookieOptions);
       res.json(basket);
     } catch (e) {
       next(AppError.badRequest(e.message));
@@ -50,7 +59,7 @@ class Basket {
       }
       const { productId, quantity } = req.params;
       const basket = await BasketModel.increment(basketId, productId, quantity);
-      res.cookie("basketId", basket.id, { maxAge, signed });
+      res.cookie("basketId", String(basket.id), cookieOptions);
       res.json(basket);
     } catch (e) {
       next(AppError.badRequest(e.message));
@@ -68,7 +77,7 @@ class Basket {
       }
       const { productId, quantity } = req.params;
       const basket = await BasketModel.decrement(basketId, productId, quantity);
-      res.cookie("basketId", basket.id, { maxAge, signed });
+      res.cookie("basketId", String(basket.id), cookieOptions);
       res.json(basket);
     } catch (e) {
       next(AppError.badRequest(e.message));
@@ -85,7 +94,7 @@ class Basket {
         basketId = parseInt(req.signedCookies.basketId);
       }
       const basket = await BasketModel.remove(basketId, req.params.productId);
-      res.cookie("basketId", basket.id, { maxAge, signed });
+      res.cookie("basketId", String(basket.id), cookieOptions);
       res.json(basket);
     } catch (e) {
       next(AppError.badRequest(e.message));
@@ -102,7 +111,7 @@ class Basket {
         basketId = parseInt(req.signedCookies.basketId);
       }
       basket = await BasketModel.clear(basketId);
-      res.cookie("basketId", basket.id, { maxAge, signed });
+      res.cookie("basketId", String(basket.id), cookieOptions);
       res.json(basket);
     } catch (e) {
       next(AppError.badRequest(e.message));
